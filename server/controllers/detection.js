@@ -15,13 +15,17 @@ export async function detect(req, res, next) {
     if (req.file) {
       mediaBuffer = req.file.path;
       filename = req.file.originalname;
-      mediaType = req.body.type || inferType(filename);
+      mediaType = inferType(filename);
     } else if (req.body?.media) {
       mediaBuffer = Buffer.from(req.body.media, "base64");
       filename = req.body.filename || "upload";
-      mediaType = req.body.type || inferType(filename);
+      mediaType = inferType(filename);
     } else {
       return res.status(400).json({ error: "No media provided. Use multipart/form-data (field: 'media') or application/json (field: 'media' as base64)" });
+    }
+
+    if (mediaType !== "image") {
+      return res.status(400).json({ error: "Only image files are supported" });
     }
 
     res.setHeader("Content-Type", "application/x-ndjson");
