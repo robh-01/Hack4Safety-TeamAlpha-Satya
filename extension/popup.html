@@ -3,19 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepFake Detector</title>
+  <title>satya</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div id="popup-container">
     <header>
-      <h1>DeepFake Detector</h1>
+      <div class="header-copy">
+        <h1>satya</h1>
+        <p>Review the latest scan with a quick verdict, confidence breakdown, and raw model output.</p>
+      </div>
     </header>
 
     <main>
       <div id="no-result" class="content-section">
-        <p>No image scanned yet.</p>
-        <p class="hint">Hover over any image on a website and click the purple scan button to analyze it.</p>
+        <div class="empty-state-icon">◌</div>
+        <p class="empty-title">No image scanned yet.</p>
+        <p class="hint">Hover over any image on a website and click the scan button to analyze it.</p>
       </div>
 
       <div id="loading" class="content-section hidden">
@@ -24,59 +28,69 @@
       </div>
 
       <div id="result" class="content-section hidden">
-        <div id="image-preview">
-          <img id="preview-img" src="" alt="Scanned image">
-        </div>
+        <section class="result-summary">
+          <div class="summary-copy">
+            <p class="eyebrow">Latest analysis</p>
+            <h2 id="assessment" class="assessment"></h2>
+          </div>
+          <div class="summary-meta">
+            <div class="meta-card">
+              <label>Analysis Source</label>
+              <span id="source" class="value"></span>
+            </div>
+            <div class="meta-card">
+              <label>Scanned</label>
+              <span id="timestamp" class="value timestamp-value"></span>
+            </div>
+          </div>
+        </section>
 
-        <div id="result-info">
-          <div class="result-item">
-            <label>Analysis Source:</label>
-            <span id="source" class="value"></span>
+        <div class="result-layout">
+          <div id="image-preview">
+            <img id="preview-img" src="" alt="Scanned image">
           </div>
 
-          <div class="result-item">
-            <label>Manipulation Likelihood:</label>
-            <div class="score-container">
-              <div id="score-bar" class="score-bar">
-                <div id="score-fill" class="score-fill"></div>
+          <div id="result-info">
+            <div class="metric-card metric-card-score">
+              <label>Manipulation Likelihood</label>
+              <div class="score-container">
+                <div id="score-bar" class="score-bar">
+                  <div id="score-fill" class="score-fill"></div>
+                </div>
+                <span id="score-percentage" class="score-percentage"></span>
               </div>
-              <span id="score-percentage" class="score-percentage"></span>
             </div>
-          </div>
 
-          <div class="result-item">
-            <label>Authenticity Confidence:</label>
-            <span id="auth-confidence" class="value"></span>
-          </div>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <label>Authenticity Confidence</label>
+                <span id="auth-confidence" class="value metric-value"></span>
+              </div>
 
-          <div class="result-item">
-            <label>Manipulation Confidence:</label>
-            <span id="manip-confidence" class="value"></span>
-          </div>
-
-          <div class="result-item">
-            <label>Why This Result:</label>
-            <div class="explanation-box">
-              <p id="explanation-text"></p>
+              <div class="metric-card">
+                <label>Manipulation Confidence</label>
+                <span id="manip-confidence" class="value metric-value"></span>
+              </div>
             </div>
-          </div>
 
-          <div class="result-item">
-            <label>Assessment:</label>
-            <span id="assessment" class="assessment"></span>
-          </div>
+            <div class="metric-card metric-card-wide">
+              <label>Detailed Explanation</label>
+              <div class="explanation-box">
+                <p id="explanation-text"></p>
+              </div>
+            </div>
 
-          <div id="detailed-results" class="detailed-results">
-            <details>
-              <summary>Detailed Results</summary>
-              <pre id="raw-data"></pre>
-            </details>
+            <div id="detailed-results" class="detailed-results metric-card metric-card-wide">
+              <details>
+                <summary>Raw model output</summary>
+                <pre id="raw-data"></pre>
+              </details>
+            </div>
           </div>
         </div>
 
         <footer>
-          <p class="timestamp" id="timestamp"></p>
-          <button id="new-scan-btn" class="button">Scan Another Image</button>
+          <button id="new-scan-btn" class="button">Scan another image</button>
         </footer>
       </div>
     </main>

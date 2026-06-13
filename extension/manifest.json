@@ -18,7 +18,7 @@
   ],
   "browser_action": {
     "default_popup": "popup.html",
-    "default_title": "DeepFake Detector"
+    "default_title": "satya"
   },
   "icons": {
     "16": "icons/logo.png",

@@ -1,4 +1,4 @@
-// Configuration Template for DeepFake Detector Extension
+// Configuration Template for satya Extension
 // Save as: extension/config.example.js
 // Copy to: extension/config.js (if you want to version control safely)
 
