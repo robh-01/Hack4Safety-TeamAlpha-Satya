@@ -14,6 +14,7 @@ import {
   Download,
   Save,
 } from "lucide-react";
+import { getConfidenceBreakdown } from "../utils/confidence";
 
 const navItems = [
   { icon: <LayoutDashboard size={18} />, label: "ड्यासबोर्ड", sub: "DASHBOARD", href: "/dashboard", active: false },
@@ -63,7 +64,8 @@ export default function EvidenceAnalysis() {
   const [dragging, setDragging] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [verdict, setVerdict] = useState<Verdict>(null);
-  const [confidence, setConfidence] = useState(0);
+  const [realConfidence, setRealConfidence] = useState(0);
+  const [fakeConfidence, setFakeConfidence] = useState(0);
   const [hash, setHash] = useState("");
 
   const fileRef = (node: HTMLInputElement | null) => { if (node) node.value = ""; };
@@ -79,6 +81,8 @@ export default function EvidenceAnalysis() {
     if (!file) return;
     setAnalyzing(true);
     setVerdict(null);
+    setRealConfidence(0);
+    setFakeConfidence(0);
     setHash("");
 
     const formData = new FormData();
@@ -112,7 +116,9 @@ export default function EvidenceAnalysis() {
             // optional: setStatusMessage(obj.message)
           } else if (obj.type === "result") {
             setVerdict(obj.data.verdict);
-            setConfidence(obj.data.confidence);
+            const breakdown = getConfidenceBreakdown(obj.data.confidence);
+            setRealConfidence(breakdown.realConfidence);
+            setFakeConfidence(breakdown.fakeConfidence);
             if (obj.data.details?.aiGenerated || obj.data.details?.deepfake) {
               setHash(obj.data.details.aiGenerated?.verdict + obj.data.details.deepfake?.verdict);
             } else {
@@ -360,11 +366,22 @@ export default function EvidenceAnalysis() {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`${cfg.badge} text-white text-sm font-bold px-4 py-2 rounded-full`}>
-                    {confidence}% Confidence
+                    {verdict === "REAL" ? `${realConfidence}% real confidence` : `${fakeConfidence}% fake confidence`}
                   </span>
                   <span className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200">
                     {incidentType.split("(")[1]?.replace(")", "") || incidentType}
                   </span>
+                </div>
+              </div>
+
+              <div className="px-8 py-4 bg-white border-t border-gray-100 grid grid-cols-2 gap-4">
+                <div className="p-3 rounded-lg bg-gray-50">
+                  <p className="text-xs font-semibold text-gray-600">Real confidence</p>
+                  <p className="text-lg font-bold text-green-700">{realConfidence}%</p>
+                </div>
+                <div className="p-3 rounded-lg bg-gray-50">
+                  <p className="text-xs font-semibold text-gray-600">Fake confidence</p>
+                  <p className="text-lg font-bold text-red-700">{fakeConfidence}%</p>
                 </div>
               </div>
 
@@ -393,7 +410,7 @@ export default function EvidenceAnalysis() {
                   <Download size={16} />
                   Download Report / रिपोर्ट डाउनलोड गर्नुहोस्
                 </button>
-                <button onClick={() => { setFile(null); setVerdict(null); setHash(""); }}
+                <button onClick={() => { setFile(null); setVerdict(null); setRealConfidence(0); setFakeConfidence(0); setHash(""); }}
                   className="ml-auto border border-gray-300 text-gray-500 px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors">
                   Analyze Another / अर्को विश्लेषण
                 </button>

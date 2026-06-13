@@ -6,6 +6,7 @@ import {
   XCircle,
   Image,
 } from "lucide-react";
+import { getConfidenceBreakdown } from "../utils/confidence";
 
 type Verdict = "REAL" | "FAKE" | null;
 
@@ -28,7 +29,8 @@ export default function ImageDetection() {
   const [analyzing, setAnalyzing] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [verdict, setVerdict] = useState<Verdict>(null);
-  const [confidence, setConfidence] = useState(0);
+  const [realConfidence, setRealConfidence] = useState(0);
+  const [fakeConfidence, setFakeConfidence] = useState(0);
   const [reasoning, setReasoning] = useState("");
   const [details, setDetails] = useState<ResultDetails | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -74,7 +76,9 @@ export default function ImageDetection() {
           } else if (obj.type === "result") {
             const data = obj.data as ResultData;
             setVerdict(data.verdict);
-            setConfidence(data.confidence);
+            const breakdown = getConfidenceBreakdown(data.confidence);
+            setRealConfidence(breakdown.realConfidence);
+            setFakeConfidence(breakdown.fakeConfidence);
             setReasoning(data.reasoning);
             setDetails(data.details ?? null);
           } else if (obj.type === "error") {
@@ -94,7 +98,8 @@ export default function ImageDetection() {
   const resetState = () => {
     setFile(null);
     setVerdict(null);
-    setConfidence(0);
+    setRealConfidence(0);
+    setFakeConfidence(0);
     setReasoning("");
     setDetails(null);
     setStatusMessage("");
@@ -208,8 +213,19 @@ export default function ImageDetection() {
                     </p>
                   </div>
                 </div>
-                <div className={`px-4 py-2 rounded-full font-bold text-lg ${verdict === "REAL" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
-                  {confidence}% Confidence
+                <div className={`px-4 py-2 rounded-full font-bold text-sm ${verdict === "REAL" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
+                  {verdict === "REAL" ? `${realConfidence}% real confidence` : `${fakeConfidence}% fake confidence`}
+                </div>
+              </div>
+
+              <div className="px-8 py-4 bg-white border-t border-gray-100 grid grid-cols-2 gap-4">
+                <div className="p-3 rounded-lg bg-gray-50">
+                  <p className="text-xs font-semibold text-gray-600">Real confidence</p>
+                  <p className="text-lg font-bold text-green-700">{realConfidence}%</p>
+                </div>
+                <div className="p-3 rounded-lg bg-gray-50">
+                  <p className="text-xs font-semibold text-gray-600">Fake confidence</p>
+                  <p className="text-lg font-bold text-red-700">{fakeConfidence}%</p>
                 </div>
               </div>
 
