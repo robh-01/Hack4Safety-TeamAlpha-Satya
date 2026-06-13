@@ -14,6 +14,7 @@ function App() {
         <Route path="/video-detect" element={<VideoDetection />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/evidence" element={<EvidenceUpload />} />
+        <Route path="/fir" element={<VoiceRecording />} />
       </Routes>
     </BrowserRouter>
   );
