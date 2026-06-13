@@ -6,7 +6,7 @@ import {
   XCircle,
   Image,
 } from "lucide-react";
-import { getConfidenceBreakdown } from "../utils/confidence";
+import { buildExplanation, getConfidenceBreakdown } from "../utils/confidence";
 
 type Verdict = "REAL" | "FAKE" | null;
 
@@ -32,6 +32,7 @@ export default function ImageDetection() {
   const [realConfidence, setRealConfidence] = useState(0);
   const [fakeConfidence, setFakeConfidence] = useState(0);
   const [reasoning, setReasoning] = useState("");
+  const [explanation, setExplanation] = useState("");
   const [details, setDetails] = useState<ResultDetails | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -81,6 +82,7 @@ export default function ImageDetection() {
             setFakeConfidence(breakdown.fakeConfidence);
             setReasoning(data.reasoning);
             setDetails(data.details ?? null);
+            setExplanation(buildExplanation(data.verdict, data.reasoning, data.details));
           } else if (obj.type === "error") {
             throw new Error(obj.message);
           }
@@ -101,6 +103,7 @@ export default function ImageDetection() {
     setRealConfidence(0);
     setFakeConfidence(0);
     setReasoning("");
+    setExplanation("");
     setDetails(null);
     setStatusMessage("");
   };
@@ -230,7 +233,10 @@ export default function ImageDetection() {
               </div>
 
               <div className="px-8 py-4 bg-white border-t border-gray-100">
-                <p className="text-sm text-gray-700">{reasoning}</p>
+                <p className="text-sm font-semibold text-gray-600 mb-2">Why this result</p>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                  <p className="text-sm text-gray-700 leading-6">{explanation || reasoning}</p>
+                </div>
               </div>
 
               {details && (

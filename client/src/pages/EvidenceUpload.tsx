@@ -14,7 +14,7 @@ import {
   Download,
   Save,
 } from "lucide-react";
-import { getConfidenceBreakdown } from "../utils/confidence";
+import { buildExplanation, getConfidenceBreakdown } from "../utils/confidence";
 
 const navItems = [
   { icon: <LayoutDashboard size={18} />, label: "ड्यासबोर्ड", sub: "DASHBOARD", href: "/dashboard", active: false },
@@ -66,6 +66,7 @@ export default function EvidenceAnalysis() {
   const [verdict, setVerdict] = useState<Verdict>(null);
   const [realConfidence, setRealConfidence] = useState(0);
   const [fakeConfidence, setFakeConfidence] = useState(0);
+  const [explanation, setExplanation] = useState("");
   const [hash, setHash] = useState("");
 
   const fileRef = (node: HTMLInputElement | null) => { if (node) node.value = ""; };
@@ -83,6 +84,7 @@ export default function EvidenceAnalysis() {
     setVerdict(null);
     setRealConfidence(0);
     setFakeConfidence(0);
+    setExplanation("");
     setHash("");
 
     const formData = new FormData();
@@ -119,6 +121,7 @@ export default function EvidenceAnalysis() {
             const breakdown = getConfidenceBreakdown(obj.data.confidence);
             setRealConfidence(breakdown.realConfidence);
             setFakeConfidence(breakdown.fakeConfidence);
+            setExplanation(buildExplanation(obj.data.verdict, obj.data.reasoning, obj.data.details));
             if (obj.data.details?.aiGenerated || obj.data.details?.deepfake) {
               setHash(obj.data.details.aiGenerated?.verdict + obj.data.details.deepfake?.verdict);
             } else {
@@ -382,6 +385,13 @@ export default function EvidenceAnalysis() {
                 <div className="p-3 rounded-lg bg-gray-50">
                   <p className="text-xs font-semibold text-gray-600">Fake confidence</p>
                   <p className="text-lg font-bold text-red-700">{fakeConfidence}%</p>
+                </div>
+              </div>
+
+              <div className="px-8 py-4 bg-white border-t border-gray-100">
+                <p className="text-sm font-semibold text-gray-600 mb-2">Why this result</p>
+                <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                  <p className="text-sm text-gray-700 leading-6">{explanation || "The model did not return a detailed explanation."}</p>
                 </div>
               </div>
 

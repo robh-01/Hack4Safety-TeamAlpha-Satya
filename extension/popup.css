@@ -160,6 +160,19 @@ main {
   font-weight: 500;
 }
 
+.explanation-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f9fafb;
+  padding: 12px 14px;
+}
+
+.explanation-box p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #374151;
+}
+
 .score-container {
   display: flex;
   align-items: center;

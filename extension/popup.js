@@ -59,6 +59,8 @@ function displayResult(data) {
   document.getElementById('auth-confidence').textContent = `${authenticityConfidence}%`;
   document.getElementById('manip-confidence').textContent = `${manipulationConfidence}%`;
 
+  document.getElementById('explanation-text').textContent = buildExplanationText(data.result);
+
   // Set assessment
   const assessmentEl = document.getElementById('assessment');
   let assessment = '';
@@ -89,4 +91,54 @@ function displayResult(data) {
   } catch (e) {
     rawDataEl.textContent = 'Could not format raw data';
   }
+}
+
+function buildExplanationText(result) {
+  const parts = [];
+  if (result.reasoning) {
+    parts.push(result.reasoning.trim());
+  }
+
+  const details = result.details || {};
+
+  if (details.aiGenerated) {
+    const score = Math.round(details.aiGenerated.score * 100);
+    if (details.aiGenerated.verdict === 'FAKE') {
+      parts.push(`AI-generated signal detected at ${score}%.`);
+    } else {
+      parts.push(`No strong AI-generated signal in the image at ${score}%.`);
+    }
+  }
+
+  if (details.deepfake) {
+    const score = Math.round(details.deepfake.score * 100);
+    if (details.deepfake.verdict === 'FAKE') {
+      parts.push(`Deepfake or manipulation signal detected at ${score}%.`);
+    } else {
+      parts.push(`No strong deepfake signal was found at ${score}%.`);
+    }
+  }
+
+  if (details.audio) {
+    const score = Math.round(details.audio.score * 100);
+    if (details.audio.verdict === 'FAKE') {
+      parts.push(`Audio analysis suggests synthetic content at ${score}%.`);
+    } else {
+      parts.push(`Audio analysis does not show strong synthetic cues at ${score}%.`);
+    }
+  }
+
+  if (details.generator?.name && details.generator.name !== 'none') {
+    parts.push(`Possible generator match: ${details.generator.name}.`);
+  }
+
+  if (result.verdict === 'REAL') {
+    parts.unshift('The model sees more authentic than synthetic signals.');
+  } else if (result.verdict === 'FAKE') {
+    parts.unshift('The model sees more synthetic or manipulated signals.');
+  } else {
+    parts.unshift('The model does not have enough signal for a strong decision.');
+  }
+
+  return parts.join(' ').replace(/\s+/g, ' ').trim();
 }
