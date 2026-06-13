@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepFake Detector</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="popup-container">
+    <header>
+      <h1>DeepFake Detector</h1>
+    </header>
+
+    <main>
+      <div id="no-result" class="content-section">
+        <p>No image scanned yet.</p>
+        <p class="hint">Hover over any image on a website and click the purple scan button to analyze it.</p>
+      </div>
+
+      <div id="loading" class="content-section hidden">
+        <div class="spinner"></div>
+        <p>Analyzing image...</p>
+      </div>
+
+      <div id="result" class="content-section hidden">
+        <div id="image-preview">
+          <img id="preview-img" src="" alt="Scanned image">
+        </div>
+
+        <div id="result-info">
+          <div class="result-item">
+            <label>Analysis Source:</label>
+            <span id="source" class="value"></span>
+          </div>
+
+          <div class="result-item">
+            <label>Manipulation Likelihood:</label>
+            <div class="score-container">
+              <div id="score-bar" class="score-bar">
+                <div id="score-fill" class="score-fill"></div>
+              </div>
+              <span id="score-percentage" class="score-percentage"></span>
+            </div>
+          </div>
+
+          <div class="result-item">
+            <label>Authenticity Confidence:</label>
+            <span id="auth-confidence" class="value"></span>
+          </div>
+
+          <div class="result-item">
+            <label>Manipulation Confidence:</label>
+            <span id="manip-confidence" class="value"></span>
+          </div>
+
+          <div class="result-item">
+            <label>Why This Result:</label>
+            <div class="explanation-box">
+              <p id="explanation-text"></p>
+            </div>
+          </div>
+
+          <div class="result-item">
+            <label>Assessment:</label>
+            <span id="assessment" class="assessment"></span>
+          </div>
+
+          <div id="detailed-results" class="detailed-results">
+            <details>
+              <summary>Detailed Results</summary>
+              <pre id="raw-data"></pre>
+            </details>
+          </div>
+        </div>
+
+        <footer>
+          <p class="timestamp" id="timestamp"></p>
+          <button id="new-scan-btn" class="button">Scan Another Image</button>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
