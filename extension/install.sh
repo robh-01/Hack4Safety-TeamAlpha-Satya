@@ -1,8 +1,8 @@
 #!/bin/bash
-# Installation script for DeepFake Detector Firefox Extension
+# Installation script for satya Firefox Extension
 # Usage: bash install.sh
 
-echo "DeepFake Detector Extension - Installation Helper"
+echo "satya Extension - Installation Helper"
 echo "=================================================="
 echo ""
 

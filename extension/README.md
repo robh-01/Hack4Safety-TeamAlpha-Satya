@@ -1,4 +1,4 @@
-# DeepFake Detector Firefox Extension
+# satya Firefox Extension
 
 A Firefox extension that scans images while browsing to detect AI-generated content and deepfakes using your Team-Alpha server.
 
@@ -167,7 +167,7 @@ HIVE_API_KEY=your_hive_api_key
 1. Edit the relevant file (content.js, background.js, popup.js, etc.)
 2. If you modified manifest.json, reload the extension:
    - Go to `about:debugging#/runtime/this-firefox`
-   - Find "DeepFake Detector" and click the reload button
+   - Find "satya" and click the reload button
 3. If you modified other files:
    - For content.js: Reload the web page in Firefox
    - For background.js: Reload the extension
@@ -177,7 +177,7 @@ HIVE_API_KEY=your_hive_api_key
 
 1. Open Firefox DevTools: `F12`
 2. Go to the "Console" tab
-3. Look for messages like "DeepFake Detector background script loaded"
+3. Look for messages like "satya background script loaded"
 4. Test scanning on sites like:
    - Google Images
    - Unsplash
