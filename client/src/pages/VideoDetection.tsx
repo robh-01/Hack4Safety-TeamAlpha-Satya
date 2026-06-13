@@ -76,6 +76,7 @@ export default function VideoDetection() {
   const [frameCount, setFrameCount] = useState<number | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -87,6 +88,7 @@ export default function VideoDetection() {
   const handleAnalyze = async () => {
     if (!file) return;
     setAnalyzing(true);
+    videoRef.current?.pause();
     setVerdict(null);
     setReasoning("");
     setDetails(null);
@@ -206,11 +208,28 @@ export default function VideoDetection() {
               </div>
               {file ? (
                 <div className="flex flex-col items-center gap-3 w-full">
-                  <video
-                    src={URL.createObjectURL(file)}
-                    controls
-                    className="max-h-64 rounded-lg shadow-sm"
-                  />
+                  {analyzing ? (
+                    <div className="scanner-container rounded-lg shadow-sm">
+                      <video
+                        ref={videoRef}
+                        src={URL.createObjectURL(file)}
+                        className="max-h-64 w-full object-contain"
+                      />
+                      <div className="scanner-glow" />
+                      <div className="scanner-line" />
+                      <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute bottom-0 left-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                    </div>
+                  ) : (
+                    <video
+                      ref={videoRef}
+                      src={URL.createObjectURL(file)}
+                      controls
+                      className="max-h-64 rounded-lg shadow-sm"
+                    />
+                  )}
                   <p className="font-semibold text-[#1a2744] text-center text-sm">{file.name}</p>
                 </div>
               ) : (

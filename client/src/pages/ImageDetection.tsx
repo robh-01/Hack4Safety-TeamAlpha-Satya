@@ -200,11 +200,27 @@ export default function ImageDetection() {
               </div>
               {file ? (
                 <div className="flex flex-col items-center gap-3 w-full">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt="Preview"
-                    className="max-h-64 rounded-lg shadow-sm object-contain"
-                  />
+                  {analyzing ? (
+                    <div className="scanner-container rounded-lg shadow-sm">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="Preview"
+                        className="max-h-64 w-full object-contain"
+                      />
+                      <div className="scanner-glow" />
+                      <div className="scanner-line" />
+                      <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute bottom-0 left-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_12px_#3b82f6] z-20" />
+                    </div>
+                  ) : (
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt="Preview"
+                      className="max-h-64 rounded-lg shadow-sm object-contain"
+                    />
+                  )}
                   <p className="font-semibold text-[#1a2744] text-center text-sm">{file.name}</p>
                 </div>
               ) : (
