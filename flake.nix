@@ -1,0 +1,25 @@
+{
+  description = "A Nix-flake-based JavaScript development environment for team Alpha";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
+  };
+  outputs =
+    { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
+    in
+    {
+      devShells.${system}.default = pkgs.mkShell {
+        packages = [
+          pkgs.nodejs
+          pkgs.yarn
+          pkgs.pnpm
+          pkgs.typescript
+          pkgs.eslint
+          pkgs.prettier
+          pkgs.typescript-language-server
+        ];
+      };
+    };
+}
