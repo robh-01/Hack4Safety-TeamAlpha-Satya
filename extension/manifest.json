@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "DeepFake Detector",
+  "version": "1.0.0",
+  "description": "Scan images while browsing to detect AI-generated content and deepfakes",
+  "permissions": [
+    "activeTab",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "DeepFake Detector"
+  },
+  "icons": {
+    "16": "icons/icon-16.svg",
+    "48": "icons/icon-48.svg",
+    "96": "icons/icon-96.svg"
+  },
+  "web_accessible_resources": ["icons/scan.svg"]
+}
