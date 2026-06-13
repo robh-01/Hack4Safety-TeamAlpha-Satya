@@ -4,7 +4,6 @@ import {
   Upload,
   CheckCircle,
   XCircle,
-  Download,
   Image,
 } from "lucide-react";
 
@@ -248,10 +247,6 @@ export default function ImageDetection() {
               )}
 
               <div className="px-8 py-5 bg-gray-50 border-t border-gray-100 flex flex-wrap gap-3">
-                <button className="flex items-center gap-2 bg-[#1a2744] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#243459] transition-colors">
-                  <Download size={16} />
-                  Download Report
-                </button>
                 <button
                   onClick={resetState}
                   className="flex items-center gap-2 border border-gray-300 text-gray-500 px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors ml-auto"
