@@ -1,12 +1,25 @@
 export type Verdict = "REAL" | "FAKE" | "INCONCLUSIVE" | null;
 
-export function getConfidenceBreakdown(confidence: number) {
-  const normalizedConfidence = Number.isFinite(confidence)
-    ? Math.max(0, Math.min(100, confidence))
-    : 0;
+export function getConfidenceBreakdown(confidence: number, verdict?: Verdict) {
+  const rawConfidence = Number.isFinite(confidence) ? confidence : 0;
+  const normalizedConfidence =
+    rawConfidence <= 1
+      ? Math.max(0, Math.min(100, rawConfidence * 100))
+      : Math.max(0, Math.min(100, rawConfidence));
 
-  const fakeConfidence = normalizedConfidence;
-  const realConfidence = 100 - normalizedConfidence;
+  let fakeConfidence = normalizedConfidence;
+  let realConfidence = 100 - normalizedConfidence;
+
+  if (verdict === "REAL") {
+    realConfidence = normalizedConfidence;
+    fakeConfidence = 100 - normalizedConfidence;
+  } else if (verdict === "FAKE") {
+    fakeConfidence = normalizedConfidence;
+    realConfidence = 100 - normalizedConfidence;
+  } else if (verdict === "INCONCLUSIVE") {
+    realConfidence = 50;
+    fakeConfidence = 50;
+  }
 
   return {
     realConfidence: Math.round(realConfidence),

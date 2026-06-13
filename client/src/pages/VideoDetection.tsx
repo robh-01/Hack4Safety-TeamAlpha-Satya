@@ -83,7 +83,7 @@ export default function VideoDetection() {
           } else if (obj.type === "result") {
             const data = obj.data as ResultData;
             setVerdict(data.verdict);
-            const breakdown = getConfidenceBreakdown(data.confidence);
+            const breakdown = getConfidenceBreakdown(data.confidence, data.verdict);
             setRealConfidence(breakdown.realConfidence);
             setFakeConfidence(breakdown.fakeConfidence);
             setReasoning(data.reasoning);
