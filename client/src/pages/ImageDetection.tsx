@@ -4,10 +4,7 @@ import {
   Upload,
   CheckCircle,
   XCircle,
-  Download,
-  Send,
   Image,
-  X,
 } from "lucide-react";
 
 type Verdict = "REAL" | "FAKE" | null;
@@ -25,43 +22,6 @@ interface ResultData {
   details?: ResultDetails;
 }
 
-function SubmitModal({ onClose }: { onClose: () => void }) {
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.45)" }}
-    >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          <X size={20} />
-        </button>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full bg-[#1a2744] flex items-center justify-center">
-            <ShieldCheck size={20} className="text-white" />
-          </div>
-          <div>
-            <h2 className="font-bold text-[#1a2744] text-lg">
-              Submit to Nepal Police
-            </h2>
-            <p className="text-xs text-gray-500">नेपाल प्रहरीमा पठाउनुहोस्</p>
-          </div>
-        </div>
-        <div className="space-y-4">
-          <input placeholder="Your full name" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#3B4FE0]" />
-          <input placeholder="+977-98XXXXXXXX" className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#3B4FE0]" />
-          <button className="w-full bg-[#1a2744] text-white rounded-lg py-3 font-semibold text-sm hover:bg-[#243459] transition-colors flex items-center justify-center gap-2">
-            <Send size={16} />
-            Submit Report / रिपोर्ट पठाउनुहोस्
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function ImageDetection() {
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -71,7 +31,6 @@ export default function ImageDetection() {
   const [confidence, setConfidence] = useState(0);
   const [reasoning, setReasoning] = useState("");
   const [details, setDetails] = useState<ResultDetails | null>(null);
-  const [showModal, setShowModal] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleDrop = (e: React.DragEvent) => {
@@ -143,8 +102,6 @@ export default function ImageDetection() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {showModal && <SubmitModal onClose={() => setShowModal(false)} />}
-
       <nav className="border-b border-gray-100 px-6 py-3 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-[#3B4FE0] rounded-lg flex items-center justify-center">
@@ -290,17 +247,6 @@ export default function ImageDetection() {
               )}
 
               <div className="px-8 py-5 bg-gray-50 border-t border-gray-100 flex flex-wrap gap-3">
-                <button className="flex items-center gap-2 bg-[#1a2744] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#243459] transition-colors">
-                  <Download size={16} />
-                  Download Report
-                </button>
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="flex items-center gap-2 border border-[#1a2744] text-[#1a2744] px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#1a2744] hover:text-white transition-colors"
-                >
-                  <Send size={16} />
-                  Submit to Nepal Police
-                </button>
                 <button
                   onClick={resetState}
                   className="flex items-center gap-2 border border-gray-300 text-gray-500 px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition-colors ml-auto"
