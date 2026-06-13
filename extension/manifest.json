@@ -3,6 +3,21 @@
   "name": "satya",
   "version": "1.0.0",
   "description": "Scan images while browsing to detect AI-generated content and deepfakes",
+  "homepage_url": "https://github.com/Lumbini-Province-Police/Team-Alpha",
+  "developer": {
+    "name": "vimlinuz",
+    "url": "https://vimlinuz.is-a.dev/"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "sayta@alpha",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+
   "permissions": ["activeTab", "<all_urls>"],
   "background": {
     "scripts": ["background.js"],
