@@ -15,8 +15,8 @@ export default function PublicPortal() {
       </nav>
 
       {/* Hero */}
-      <main className="flex-1 flex flex-col items-center px-4 py-20">
-        <img src={logo} alt="SATYA" className="w-16 h-16 rounded-2xl object-contain mb-6" />
+      <main className="flex-1 flex flex-col items-center px-4 py-5">
+        <img src={logo} alt="SATYA" className="w-[120px] h-[120px] rounded-2xl object-contain mb-6" />
         <h1 className="text-4xl font-bold text-[#1a2744] text-center mb-2">
           AI Evidence Integrity System
         </h1>
