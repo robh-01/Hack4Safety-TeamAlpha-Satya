@@ -27,6 +27,8 @@ Common client files:
 - `src/App.tsx` - Root application component.
 - `vite.config.ts` - Vite configuration.
 - `eslint.config.js` - Linting rules.
+- `src/ImageDetection.tsx` - Image detection route for web app.
+- `src/VideoDetection.tsx` - Video detection route for web app.
 
 ## Server
 
@@ -77,4 +79,3 @@ The extension adds scanning tools inside Firefox.
 - Check `server/routes/` for API entry points.
 - Check `extension/content.js` for browser scanning behavior.
 - Use `README.md` files inside each package for package-specific details.
-
