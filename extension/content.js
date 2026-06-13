@@ -35,7 +35,7 @@ function createScanButton(imageElement) {
     imageElement.src || imageElement.currentSrc,
   );
   button.style.cssText = `
-    background: linear-gradient(135deg, #6d79f6 0%, #8b5cf6 100%);
+    background: #6d79f6;
     border: none;
     border-radius: 50%;
     width: 34px;

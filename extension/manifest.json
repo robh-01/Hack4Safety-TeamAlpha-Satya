@@ -1,12 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "DeepFake Detector",
+  "name": "satya",
   "version": "1.0.0",
   "description": "Scan images while browsing to detect AI-generated content and deepfakes",
-  "permissions": [
-    "activeTab",
-    "<all_urls>"
-  ],
+  "permissions": ["activeTab", "<all_urls>"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -24,9 +21,9 @@
     "default_title": "DeepFake Detector"
   },
   "icons": {
-    "16": "icons/icon-16.svg",
-    "48": "icons/icon-48.svg",
-    "96": "icons/icon-96.svg"
+    "16": "icons/logo.png",
+    "48": "icons/logo.png",
+    "96": "icons/logo.png"
   },
   "web_accessible_resources": ["icons/scan.svg"]
 }
