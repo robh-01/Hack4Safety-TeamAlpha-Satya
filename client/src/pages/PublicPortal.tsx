@@ -35,14 +35,19 @@ function SubmitModal({ onClose }: SubmitModalProps) {
             <ShieldCheck size={20} className="text-white" />
           </div>
           <div>
-            <h2 className="font-bold text-[#1a2744] text-lg">Submit to Nepal Police</h2>
+            <h2 className="font-bold text-[#1a2744] text-lg">
+              Submit to Nepal Police
+            </h2>
             <p className="text-xs text-gray-500">नेपाल प्रहरीमा पठाउनुहोस्</p>
           </div>
         </div>
         <div className="space-y-4">
           <div>
             <label className="block font-semibold text-[#1a2744] text-sm mb-1">
-              नाम <span className="font-normal text-gray-400 text-xs ml-1">/ Name</span>
+              नाम{" "}
+              <span className="font-normal text-gray-400 text-xs ml-1">
+                / Name
+              </span>
             </label>
             <input
               type="text"
@@ -52,7 +57,10 @@ function SubmitModal({ onClose }: SubmitModalProps) {
           </div>
           <div>
             <label className="block font-semibold text-[#1a2744] text-sm mb-1">
-              सम्पर्क नम्बर <span className="font-normal text-gray-400 text-xs ml-1">/ Contact Number</span>
+              सम्पर्क नम्बर{" "}
+              <span className="font-normal text-gray-400 text-xs ml-1">
+                / Contact Number
+              </span>
             </label>
             <input
               type="tel"
@@ -62,7 +70,10 @@ function SubmitModal({ onClose }: SubmitModalProps) {
           </div>
           <div>
             <label className="block font-semibold text-[#1a2744] text-sm mb-1">
-              संक्षिप्त विवरण <span className="font-normal text-gray-400 text-xs ml-1">/ Brief Description</span>
+              संक्षिप्त विवरण{" "}
+              <span className="font-normal text-gray-400 text-xs ml-1">
+                / Brief Description
+              </span>
             </label>
             <textarea
               rows={3}
@@ -84,9 +95,10 @@ export default function PublicPortal() {
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
   const [verdict, setVerdict] = useState<Verdict>(null);
   const [confidence, setConfidence] = useState(0);
-  const [hash, setHash] = useState("");
+  const [reasoning, setReasoning] = useState("");
   const [showModal, setShowModal] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -97,28 +109,67 @@ export default function PublicPortal() {
     if (dropped) setFile(dropped);
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!file) return;
     setAnalyzing(true);
     setVerdict(null);
-    setTimeout(() => {
-      const isReal = Math.random() > 0.5;
-      setVerdict(isReal ? "REAL" : "FAKE");
-      setConfidence(Math.floor(Math.random() * 15) + (isReal ? 85 : 90));
-      setHash(
-        Array.from({ length: 64 }, () =>
-          Math.floor(Math.random() * 16).toString(16)
-        ).join("")
-      );
+    setReasoning("");
+    setStatusMessage("");
+
+    const formData = new FormData();
+    formData.append("media", file);
+
+    try {
+      const res = await fetch("/api/detect", {
+        method: "POST",
+        body: formData,
+      });
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No response body");
+
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const obj = JSON.parse(line);
+
+          if (obj.type === "status") {
+            setStatusMessage(obj.message);
+          } else if (obj.type === "result") {
+            setVerdict(obj.data.verdict);
+            setConfidence(obj.data.confidence);
+            setReasoning(obj.data.reasoning);
+          } else if (obj.type === "error") {
+            throw new Error(obj.message);
+          }
+        }
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      console.error("Analysis failed:", msg);
+      alert("Analysis failed: " + msg);
+    } finally {
       setAnalyzing(false);
-    }, 2500);
+      setStatusMessage("");
+    }
   };
 
   const resetState = () => {
     setFile(null);
     setVerdict(null);
     setConfidence(0);
-    setHash("");
+    setReasoning("");
+    setStatusMessage("");
   };
 
   return (
@@ -134,7 +185,9 @@ export default function PublicPortal() {
           <div>
             <span className="font-bold text-[#1a2744] text-base">SATYA</span>
             <span className="text-gray-400 text-xs ml-2">नेपाल प्रहरी</span>
-            <div className="text-[10px] text-gray-400 leading-none">NEPAL POLICE</div>
+            <div className="text-[10px] text-gray-400 leading-none">
+              NEPAL POLICE
+            </div>
           </div>
         </div>
         <a
@@ -171,7 +224,10 @@ export default function PublicPortal() {
                   ? "border-[#3B4FE0] bg-blue-50"
                   : "border-gray-300 bg-gray-50 hover:border-[#3B4FE0]"
               }`}
-              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragging(true);
+              }}
               onDragLeave={() => setDragging(false)}
               onDrop={handleDrop}
               onClick={() => fileRef.current?.click()}
@@ -180,24 +236,26 @@ export default function PublicPortal() {
                 ref={fileRef}
                 type="file"
                 className="hidden"
-                accept="image/*,video/*,audio/*"
+                accept="image/*"
                 onChange={(e) => e.target.files && setFile(e.target.files[0])}
               />
               <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mb-4">
                 <Upload size={28} className="text-gray-400" />
               </div>
               {file ? (
-                <p className="font-semibold text-[#1a2744] text-center">{file.name}</p>
+                <p className="font-semibold text-[#1a2744] text-center">
+                  {file.name}
+                </p>
               ) : (
                 <>
                   <p className="font-semibold text-[#1a2744] text-center text-base">
-                    Upload image, video, or audio to check integrity
+                    Upload image to check integrity
                   </p>
                   <p className="text-[#3B4FE0] text-sm text-center mt-1">
                     वास्तविक वा कृत्रिम जाँच गर्नका लागि फाइल अपलोड गर्नुहोस्
                   </p>
                   <p className="text-gray-400 text-xs mt-3">
-                    Supports: JPG, PNG, MP4, MP3 (Max 50MB)
+                    Supports: JPG, PNG, WebP (Max 50MB)
                   </p>
                 </>
               )}
@@ -245,13 +303,9 @@ export default function PublicPortal() {
                 </div>
               </div>
 
-              {/* Hash */}
-              <div className="px-8 py-4 bg-white border-t border-gray-100 flex items-start gap-3">
-                <Hash size={16} className="text-gray-400 mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs text-gray-400 mb-1">SHA-256 SIGNATURE</p>
-                  <p className="font-mono text-xs text-gray-700 break-all">{hash}</p>
-                </div>
+              {/* Reasoning */}
+              <div className="px-8 py-4 bg-white border-t border-gray-100">
+                <p className="text-sm text-gray-700">{reasoning}</p>
               </div>
 
               {/* Actions */}
@@ -290,11 +344,26 @@ export default function PublicPortal() {
             >
               {analyzing ? (
                 <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  <svg
+                    className="animate-spin h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    />
                   </svg>
-                  Analyzing... / विश्लेषण हुँदैछ...
+                  {statusMessage || "Analyzing... / विश्लेषण हुँदैछ..."}
                 </span>
               ) : (
                 "Analyze / विश्लेषण गर्नुहोस्"
@@ -322,12 +391,19 @@ export default function PublicPortal() {
               desc: "Uploaded files are encrypted and automatically purged after 24 hours if not submitted for investigation.",
             },
           ].map((item, i) => (
-            <div key={i} className="flex flex-col items-start gap-3 p-6 rounded-xl bg-gray-50 border border-gray-100">
+            <div
+              key={i}
+              className="flex flex-col items-start gap-3 p-6 rounded-xl bg-gray-50 border border-gray-100"
+            >
               <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
                 {item.icon}
               </div>
-              <h3 className="font-semibold text-[#1a2744] text-sm">{item.title}</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
+              <h3 className="font-semibold text-[#1a2744] text-sm">
+                {item.title}
+              </h3>
+              <p className="text-gray-500 text-xs leading-relaxed">
+                {item.desc}
+              </p>
             </div>
           ))}
         </div>
@@ -345,7 +421,8 @@ export default function PublicPortal() {
             </div>
             <p className="text-gray-400 text-xs leading-relaxed">
               AI Evidence Integrity System for authentication of digital media.
-              Empowering the Nepal Police with cutting-edge verification technology.
+              Empowering the Nepal Police with cutting-edge verification
+              technology.
             </p>
           </div>
           <div>
@@ -353,9 +430,21 @@ export default function PublicPortal() {
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Public Portal / सार्वजनिक पोर्टल</a></li>
-              <li><a href="/login" className="hover:text-white transition-colors">Officer Login / अधिकारी लगइन</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy / गोपनीयता नीति</a></li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Public Portal / सार्वजनिक पोर्टल
+                </a>
+              </li>
+              <li>
+                <a href="/login" className="hover:text-white transition-colors">
+                  Officer Login / अधिकारी लगइन
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition-colors">
+                  Privacy Policy / गोपनीयता नीति
+                </a>
+              </li>
             </ul>
           </div>
           <div>
@@ -365,19 +454,27 @@ export default function PublicPortal() {
             <p className="text-4xl font-bold text-white mb-1">100</p>
             <p className="text-gray-400 text-sm mb-4">Nepal Police Hotline</p>
             <div className="flex gap-2">
-              <a href="https://www.facebook.com/NepalPolicePHQ" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+              <a
+                href="https://www.facebook.com/NepalPolicePHQ"
+                className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold"
+              >
                 f
               </a>
-              <a href="https://x.com/NepalPoliceHQ" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+              <a
+                href="https://x.com/NepalPoliceHQ"
+                className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold"
+              >
                 𝕏
               </a>
             </div>
           </div>
         </div>
         <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-gray-500">
-          © 2026 Nepal Police AI Evidence Integrity System. Authorized Access Only.
+          © 2026 Nepal Police AI Evidence Integrity System. Authorized Access
+          Only.
         </div>
       </footer>
     </div>
   );
 }
+
