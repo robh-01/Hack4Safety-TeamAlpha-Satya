@@ -365,10 +365,10 @@ export default function PublicPortal() {
             <p className="text-4xl font-bold text-white mb-1">100</p>
             <p className="text-gray-400 text-sm mb-4">Nepal Police Hotline</p>
             <div className="flex gap-2">
-              <a href="https://facebook.com/nepalpolice" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+              <a href="https://www.facebook.com/NepalPolicePHQ" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
                 f
               </a>
-              <a href="https://twitter.com/nepalpolice" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+              <a href="https://x.com/NepalPoliceHQ" className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
                 𝕏
               </a>
             </div>
