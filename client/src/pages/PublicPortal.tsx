@@ -1,4 +1,5 @@
-import { ShieldCheck, Image, Video, ArrowRight } from "lucide-react";
+import { Image, Video, ArrowRight } from "lucide-react";
+import logo from "../assets/logo.png";
 
 export default function PublicPortal() {
   return (
@@ -6,33 +7,22 @@ export default function PublicPortal() {
       {/* Navbar */}
       <nav className="border-b border-gray-100 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#3B4FE0] rounded-lg flex items-center justify-center">
-            <ShieldCheck size={18} className="text-white" />
-          </div>
+          <img src={logo} alt="SATYA" className="w-8 h-8 rounded-lg object-contain" />
           <div>
             <span className="font-bold text-[#1a2744] text-base">SATYA</span>
-            <span className="text-gray-400 text-xs ml-2">नेपाल प्रहरी</span>
-            <div className="text-[10px] text-gray-400 leading-none">
-              NEPAL POLICE
-            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
       <main className="flex-1 flex flex-col items-center px-4 py-20">
-        <div className="w-16 h-16 bg-[#3B4FE0] rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-          <ShieldCheck size={32} className="text-white" />
-        </div>
+        <img src={logo} alt="SATYA" className="w-16 h-16 rounded-2xl object-contain mb-6 shadow-lg" />
         <h1 className="text-4xl font-bold text-[#1a2744] text-center mb-2">
           AI Evidence Integrity System
         </h1>
-        <p className="text-[#3B4FE0] font-semibold text-lg text-center mb-3">
-          डिजिटल प्रमाण सत्यापन प्रणाली
-        </p>
         <p className="text-gray-500 text-sm text-center max-w-lg mb-16">
-          Official platform for the Nepal Police to verify the authenticity of
-          digital media. Choose a detection mode below.
+          Official platform to verify the authenticity of digital media.
+          Choose a detection mode below.
         </p>
 
         {/* Route Cards */}
@@ -50,7 +40,6 @@ export default function PublicPortal() {
             <h2 className="text-xl font-bold text-[#1a2744] mb-2">
               Image Detection
             </h2>
-            <p className="text-gray-500 text-sm mb-4">तस्बिर जाँच</p>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Upload images to detect AI-generated content, deepfakes, and
               digital manipulations. Supports JPG, PNG, WebP, GIF.
@@ -73,7 +62,6 @@ export default function PublicPortal() {
             <h2 className="text-xl font-bold text-[#1a2744] mb-2">
               Video Detection
             </h2>
-            <p className="text-gray-500 text-sm mb-4">भिडियो जाँच</p>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Upload videos for AI and deepfake detection using Hive AI.
               Analyzes per-frame with multi-frame aggregation. Supports MP4,
@@ -93,15 +81,12 @@ export default function PublicPortal() {
         <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <ShieldCheck size={16} className="text-[#1a2744]" />
-              </div>
+              <img src={logo} alt="SATYA" className="w-8 h-8 rounded-lg object-contain bg-white" />
               <span className="font-bold text-white">SATYA</span>
             </div>
             <p className="text-gray-400 text-xs leading-relaxed">
               AI Evidence Integrity System for authentication of digital media.
-              Empowering the Nepal Police with cutting-edge verification
-              technology.
+              Empowering verification with cutting-edge technology.
             </p>
           </div>
           <div>
@@ -111,7 +96,7 @@ export default function PublicPortal() {
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
                 <a href="/" className="hover:text-white transition-colors">
-                  Home / गृहपृष्ठ
+                  Home
                 </a>
               </li>
               <li>
@@ -119,7 +104,7 @@ export default function PublicPortal() {
                   href="/image-detect"
                   className="hover:text-white transition-colors"
                 >
-                  Image Detection / तस्बिर जाँच
+                  Image Detection
                 </a>
               </li>
               <li>
@@ -127,7 +112,7 @@ export default function PublicPortal() {
                   href="/video-detect"
                   className="hover:text-white transition-colors"
                 >
-                  Video Detection / भिडियो जाँच
+                  Video Detection
                 </a>
               </li>
             </ul>
@@ -137,16 +122,16 @@ export default function PublicPortal() {
               Emergency Contact
             </h4>
             <p className="text-4xl font-bold text-white mb-1">100</p>
-            <p className="text-gray-400 text-sm mb-4">Nepal Police Hotline</p>
+            <p className="text-gray-400 text-sm mb-4">Emergency Hotline</p>
             <div className="flex gap-2">
               <a
-                href="https://www.facebook.com/NepalPolicePHQ"
+                href="#"
                 className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold"
               >
                 f
               </a>
               <a
-                href="https://x.com/NepalPoliceHQ"
+                href="#"
                 className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold"
               >
                 𝕏
@@ -155,8 +140,7 @@ export default function PublicPortal() {
           </div>
         </div>
         <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-gray-500">
-          © 2026 Nepal Police AI Evidence Integrity System. Authorized Access
-          Only.
+          © 2026 AI Evidence Integrity System. Authorized Access Only.
         </div>
       </footer>
     </div>

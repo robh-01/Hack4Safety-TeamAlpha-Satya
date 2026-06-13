@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import {
-  ShieldCheck,
   Upload,
   CheckCircle,
   XCircle,
   Video,
 } from "lucide-react";
 import { buildExplanation, getConfidenceBreakdown } from "../utils/confidence";
+import logo from "../assets/logo.png";
 
 type Verdict = "REAL" | "FAKE" | null;
 
@@ -120,13 +120,9 @@ export default function VideoDetection() {
     <div className="min-h-screen bg-white flex flex-col">
       <nav className="border-b border-gray-100 px-6 py-3 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#3B4FE0] rounded-lg flex items-center justify-center">
-            <ShieldCheck size={18} className="text-white" />
-          </div>
+          <img src={logo} alt="SATYA" className="w-8 h-8 rounded-lg object-contain" />
           <div>
             <span className="font-bold text-[#1a2744] text-base">SATYA</span>
-            <span className="text-gray-400 text-xs ml-2">नेपाल प्रहरी</span>
-            <div className="text-[10px] text-gray-400 leading-none">NEPAL POLICE</div>
           </div>
         </a>
         <div className="flex items-center gap-3">
@@ -143,9 +139,6 @@ export default function VideoDetection() {
         <h1 className="text-3xl font-bold text-[#1a2744] text-center mb-2">
           Video Deepfake Detection
         </h1>
-        <p className="text-[#3B4FE0] font-semibold text-lg text-center mb-3">
-          भिडियो प्रमाण सत्यापन
-        </p>
         <p className="text-gray-500 text-sm text-center max-w-lg mb-12">
           Upload a video to detect AI-generated content, deepfakes, and manipulations using Hive AI.
         </p>
@@ -202,9 +195,6 @@ export default function VideoDetection() {
                   <p className="font-semibold text-[#1a2744] text-center text-base">
                     Upload video to check integrity
                   </p>
-                  <p className="text-[#3B4FE0] text-sm text-center mt-1">
-                    भिडियोको वास्तविकता जाँच गर्न अपलोड गर्नुहोस्
-                  </p>
                   <p className="text-gray-400 text-xs mt-3">
                     Supports: MP4, WebM, AVI, MKV, WMV, MOV (Max 50MB)
                   </p>
@@ -218,7 +208,7 @@ export default function VideoDetection() {
                   {verdict === "REAL" ? <CheckCircle size={32} className="text-green-600" /> : <XCircle size={32} className="text-red-600" />}
                   <div>
                     <p className={`text-2xl font-bold ${verdict === "REAL" ? "text-green-700" : "text-red-700"}`}>
-                      {verdict === "REAL" ? "REAL / वास्तविक" : "FAKE / कृत्रिम"}
+                      {verdict === "REAL" ? "REAL" : "FAKE"}
                     </p>
                     <p className="text-sm text-gray-500">
                       {verdict === "REAL" ? "No signs of AI manipulation detected." : "AI/Deepfake manipulation detected."}
@@ -318,10 +308,10 @@ export default function VideoDetection() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                   </svg>
-                  {statusMessage || "Analyzing... / विश्लेषण हुँदैछ..."}
+                  {statusMessage || "Analyzing..."}
                 </span>
               ) : (
-                "Analyze Video / भिडियो विश्लेषण गर्नुहोस्"
+                "Analyze Video"
               )}
             </button>
           )}
@@ -334,9 +324,7 @@ export default function VideoDetection() {
         <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <ShieldCheck size={16} className="text-[#1a2744]" />
-              </div>
+              <img src={logo} alt="SATYA" className="w-8 h-8 rounded-lg object-contain bg-white" />
               <span className="font-bold text-white">SATYA</span>
             </div>
             <p className="text-gray-400 text-xs leading-relaxed">
@@ -346,19 +334,19 @@ export default function VideoDetection() {
           <div>
             <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="/" className="hover:text-white transition-colors">Home / गृहपृष्ठ</a></li>
-              <li><a href="/image-detect" className="hover:text-white transition-colors">Image Detection / तस्बिर जाँच</a></li>
-              <li><a href="/video-detect" className="hover:text-white transition-colors">Video Detection / भिडियो जाँच</a></li>
+              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+              <li><a href="/image-detect" className="hover:text-white transition-colors">Image Detection</a></li>
+              <li><a href="/video-detect" className="hover:text-white transition-colors">Video Detection</a></li>
             </ul>
           </div>
           <div>
             <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-widest mb-4">Emergency Contact</h4>
             <p className="text-4xl font-bold text-white mb-1">100</p>
-            <p className="text-gray-400 text-sm mb-4">Nepal Police Hotline</p>
+            <p className="text-gray-400 text-sm mb-4">Emergency Hotline</p>
           </div>
         </div>
         <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-gray-500">
-          © 2026 Nepal Police AI Evidence Integrity System. Authorized Access Only.
+          © 2026 AI Evidence Integrity System. Authorized Access Only.
         </div>
       </footer>
     </div>
