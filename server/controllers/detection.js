@@ -1,10 +1,20 @@
 import { analyze } from "../services/orchestrator.js";
-import { inferType } from "../services/sightEngineService.js";
+import { inferType as sightInferType } from "../services/sightEngineService.js";
+import { inferType as hiveInferType } from "../services/hiveService.js";
 import { removeFile } from "../utils/fileUtils.js";
 
 function ndjson(res, obj) {
   res.write(JSON.stringify(obj) + "\n");
 }
+
+function inferType(filename) {
+  return sightInferType(filename) || hiveInferType(filename);
+}
+
+const SERVICE_NAMES = {
+  image: "SightEngine",
+  video: "Hive AI",
+};
 
 export async function detect(req, res, next) {
   try {
@@ -25,12 +35,14 @@ export async function detect(req, res, next) {
     }
 
     if (!mediaType) {
-      return res.status(400).json({ error: "Only image files are supported" });
+      return res.status(400).json({ error: "Unsupported file type. Supported: images (JPG, PNG, WebP, GIF) and videos (MP4, WebM, AVI, MKV, WMV, MOV)" });
     }
+
+    const serviceName = SERVICE_NAMES[mediaType] || "Analysis";
 
     res.setHeader("Content-Type", "application/x-ndjson");
 
-    ndjson(res, { type: "status", message: `Connecting to SightEngine for ${mediaType} analysis...` });
+    ndjson(res, { type: "status", message: `Sending to ${serviceName} for ${mediaType} analysis...` });
 
     const result = await analyze(req.file?.path, mediaBuffer, filename, mediaType);
 

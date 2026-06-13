@@ -1,15 +1,27 @@
 import { analyzeSightEngine } from "./sightEngineService.js";
+import { analyzeHive } from "./hiveService.js";
 import config from "../config/index.js";
 
 export async function analyze(filePath, mediaBuffer, filename, mediaType) {
-  const { apiUser, apiSecret } = config.sightEngine;
+  const buffer = mediaBuffer || filePath;
 
-  if (!apiUser || !apiSecret) {
-    throw new Error("SIGHT_ENGINE_API_USER and SIGHT_ENGINE_API_SECRET must be set");
+  if (mediaType === "video") {
+    const { apiKey } = config.hive;
+    if (!apiKey) {
+      throw new Error("HIVE_API_KEY must be set for video analysis");
+    }
+    return await analyzeHive(buffer, filename, mediaType, apiKey);
   }
 
-  const buffer = mediaBuffer || filePath;
-  const result = await analyzeSightEngine(buffer, filename, mediaType, apiUser, apiSecret);
+  const { apiUser, apiSecret } = config.sightEngine;
+  if (apiUser && apiSecret) {
+    return await analyzeSightEngine(buffer, filename, mediaType, apiUser, apiSecret);
+  }
 
-  return result;
+  const { apiKey } = config.hive;
+  if (apiKey) {
+    return await analyzeHive(buffer, filename, mediaType, apiKey);
+  }
+
+  throw new Error("No API credentials configured. Set SIGHT_ENGINE_API_USER/SECRET or HIVE_API_KEY");
 }
