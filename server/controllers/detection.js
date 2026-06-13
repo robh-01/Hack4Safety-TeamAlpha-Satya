@@ -24,7 +24,7 @@ export async function detect(req, res, next) {
       return res.status(400).json({ error: "No media provided. Use multipart/form-data (field: 'media') or application/json (field: 'media' as base64)" });
     }
 
-    if (mediaType !== "image") {
+    if (!mediaType) {
       return res.status(400).json({ error: "Only image files are supported" });
     }
 

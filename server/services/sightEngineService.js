@@ -1,13 +1,15 @@
+import { readFile } from "node:fs/promises";
+
 const SIGHT_ENGINE_BASE = "https://api.sightengine.com/1.0";
 
 function inferType(filename) {
   const ext = filename.split(".").pop()?.toLowerCase() || "";
-  return ["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext) ? "image" : "image";
+  return ["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext) ? "image" : null;
 }
 
-function buildSightForm(mediaBuffer, filename, _mediaType, apiUser, apiSecret) {
+function buildSightForm(buffer, filename, apiUser, apiSecret) {
   const form = new FormData();
-  const blob = new Blob([new Uint8Array(mediaBuffer)], { type: "image/jpeg" });
+  const blob = new Blob([buffer], { type: "image/jpeg" });
 
   form.append("media", blob, filename);
   form.append("models", "genai,deepfake");
@@ -15,10 +17,6 @@ function buildSightForm(mediaBuffer, filename, _mediaType, apiUser, apiSecret) {
   form.append("api_secret", apiSecret);
 
   return form;
-}
-
-function endpointForType(_mediaType) {
-  return `${SIGHT_ENGINE_BASE}/check.json`;
 }
 
 function parseImageResult(data) {
@@ -35,17 +33,19 @@ function parseImageResult(data) {
     verdict: maxScore > 0.5 ? "FAKE" : "REAL",
     confidence: Math.round(maxScore * 100),
     reasoning: reasons.join(". "),
-    details: {
-      ai_generated: aiGen,
-      deepfake,
-      generators: data.type?.ai_generators ?? {},
-    },
   };
 }
 
-export async function analyzeSightEngine(mediaBuffer, filename, _mediaType, apiUser, apiSecret) {
-  const form = buildSightForm(mediaBuffer, filename, "image", apiUser, apiSecret);
-  const endpoint = endpointForType("image");
+export async function analyzeSightEngine(mediaInput, filename, _mediaType, apiUser, apiSecret) {
+  let buffer;
+  if (typeof mediaInput === "string") {
+    buffer = await readFile(mediaInput);
+  } else {
+    buffer = mediaInput;
+  }
+
+  const form = buildSightForm(buffer, filename, apiUser, apiSecret);
+  const endpoint = `${SIGHT_ENGINE_BASE}/check.json`;
 
   const response = await fetch(endpoint, { method: "POST", body: form });
   const result = await response.json();
