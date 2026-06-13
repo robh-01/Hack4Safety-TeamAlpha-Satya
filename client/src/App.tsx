@@ -4,6 +4,7 @@ import ImageDetection from "./pages/ImageDetection";
 import VideoDetection from "./pages/VideoDetection";
 import Dashboard from "./pages/Dashboard";
 import EvidenceUpload from "./pages/EvidenceUpload";
+import SubmitReport from "./components/SubmitReport";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/video-detect" element={<VideoDetection />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/evidence" element={<EvidenceUpload />} />
+        <Route path="/submit-report" element={<SubmitReport />} />
       </Routes>
     </BrowserRouter>
   );
