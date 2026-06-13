@@ -1,14 +1,15 @@
-import { analyzeMetadata } from "./metadataService.js";
-import { analyzePixels } from "./pixelService.js";
+import { analyzeSightEngine } from "./sightEngineService.js";
+import config from "../config/index.js";
 
-export async function analyze(filePath) {
-  const [metadataResult, pixelResult] = await Promise.all([
-    analyzeMetadata(filePath),
-    analyzePixels(filePath),
-  ]);
+export async function analyze(filePath, mediaBuffer, filename, mediaType) {
+  const { apiUser, apiSecret } = config.sightEngine;
 
-  return {
-    metadata: metadataResult,
-    pixel: pixelResult,
-  };
+  if (!apiUser || !apiSecret) {
+    throw new Error("SIGHT_ENGINE_API_USER and SIGHT_ENGINE_API_SECRET must be set");
+  }
+
+  const buffer = mediaBuffer || filePath;
+  const result = await analyzeSightEngine(buffer, filename, mediaType, apiUser, apiSecret);
+
+  return result;
 }

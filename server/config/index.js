@@ -8,11 +8,14 @@ export default {
       "image/webp",
       "video/mp4",
       "video/webm",
+      "audio/mpeg",
+      "audio/wav",
+      "audio/ogg",
     ],
     dest: "uploads/",
   },
-  analysis: {
-    metadata: { enabled: true },
-    pixel: { enabled: true },
+  sightEngine: {
+    apiUser: process.env.SIGHT_ENGINE_API_USER || "",
+    apiSecret: process.env.SIGHT_ENGINE_API_SECRET || "",
   },
 };
