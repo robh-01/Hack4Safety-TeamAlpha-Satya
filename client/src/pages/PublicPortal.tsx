@@ -17,7 +17,6 @@ export default function PublicPortal() {
             </div>
           </div>
         </div>
-
       </nav>
 
       {/* Hero */}
@@ -43,16 +42,18 @@ export default function PublicPortal() {
             className="group bg-white rounded-2xl border border-gray-200 p-8 hover:border-[#3B4FE0] hover:shadow-lg transition-all"
           >
             <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5 group-hover:bg-[#3B4FE0] group-hover:text-white transition-colors">
-              <Image size={28} className="text-[#3B4FE0] group-hover:text-white transition-colors" />
+              <Image
+                size={28}
+                className="text-[#3B4FE0] group-hover:text-white transition-colors"
+              />
             </div>
             <h2 className="text-xl font-bold text-[#1a2744] mb-2">
               Image Detection
             </h2>
-            <p className="text-gray-500 text-sm mb-4">
-              तस्बिर जाँच
-            </p>
+            <p className="text-gray-500 text-sm mb-4">तस्बिर जाँच</p>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Upload images to detect AI-generated content, deepfakes, and digital manipulations. Supports JPG, PNG, WebP, GIF.
+              Upload images to detect AI-generated content, deepfakes, and
+              digital manipulations. Supports JPG, PNG, WebP, GIF.
             </p>
             <span className="inline-flex items-center gap-2 text-[#3B4FE0] font-semibold text-sm group-hover:gap-3 transition-all">
               Open Image Detection <ArrowRight size={16} />
@@ -64,16 +65,19 @@ export default function PublicPortal() {
             className="group bg-white rounded-2xl border border-gray-200 p-8 hover:border-[#3B4FE0] hover:shadow-lg transition-all"
           >
             <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-5 group-hover:bg-[#3B4FE0] group-hover:text-white transition-colors">
-              <Video size={28} className="text-[#3B4FE0] group-hover:text-white transition-colors" />
+              <Video
+                size={28}
+                className="text-[#3B4FE0] group-hover:text-white transition-colors"
+              />
             </div>
             <h2 className="text-xl font-bold text-[#1a2744] mb-2">
               Video Detection
             </h2>
-            <p className="text-gray-500 text-sm mb-4">
-              भिडियो जाँच
-            </p>
+            <p className="text-gray-500 text-sm mb-4">भिडियो जाँच</p>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Upload videos for AI and deepfake detection using Hive AI. Analyzes per-frame with multi-frame aggregation. Supports MP4, WebM, AVI, MOV.
+              Upload videos for AI and deepfake detection using Hive AI.
+              Analyzes per-frame with multi-frame aggregation. Supports MP4,
+              WebM, AVI, MOV.
             </p>
             <span className="inline-flex items-center gap-2 text-[#3B4FE0] font-semibold text-sm group-hover:gap-3 transition-all">
               Open Video Detection <ArrowRight size={16} />
@@ -82,34 +86,17 @@ export default function PublicPortal() {
         </div>
 
         {/* Trust Badges */}
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl w-full">
+        <div className="mt-24 flex flex-wrap justify-between gap-6 max-w-4xl w-full">
           {[
-            {
-              title: "Official Verification",
-              desc: "Directly linked to Nepal Police Cyber Bureau databases for official forensic audit.",
-            },
-            {
-              title: "Blockchain Logging",
-              desc: "Every analysis generates a cryptographic hash to ensure the evidence chain remains untampered.",
-            },
-            {
-              title: "Privacy Guaranteed",
-              desc: "Uploaded files are encrypted and automatically purged after 24 hours if not submitted for investigation.",
-            },
+            { title: "Official Verification", desc: "Directly linked to Nepal Police Cyber Bureau databases for official forensic audit." },
+            { title: "Privacy Guaranteed", desc: "Uploaded files are encrypted and automatically purged after 24 hours if not submitted for investigation." },
           ].map((item, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-start gap-3 p-6 rounded-xl bg-gray-50 border border-gray-100"
-            >
+            <div key={i} className="flex-1 min-w-[200px] flex flex-col items-start gap-3 p-6 rounded-xl bg-gray-50 border border-gray-100">
               <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
                 <ShieldCheck size={20} className="text-[#3B4FE0]" />
               </div>
-              <h3 className="font-semibold text-[#1a2744] text-sm">
-                {item.title}
-              </h3>
-              <p className="text-gray-500 text-xs leading-relaxed">
-                {item.desc}
-              </p>
+              <h3 className="font-semibold text-[#1a2744] text-sm">{item.title}</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -136,9 +123,27 @@ export default function PublicPortal() {
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="/" className="hover:text-white transition-colors">Home / गृहपृष्ठ</a></li>
-              <li><a href="/image-detect" className="hover:text-white transition-colors">Image Detection / तस्बिर जाँच</a></li>
-              <li><a href="/video-detect" className="hover:text-white transition-colors">Video Detection / भिडियो जाँच</a></li>
+              <li>
+                <a href="/" className="hover:text-white transition-colors">
+                  Home / गृहपृष्ठ
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/image-detect"
+                  className="hover:text-white transition-colors"
+                >
+                  Image Detection / तस्बिर जाँच
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/video-detect"
+                  className="hover:text-white transition-colors"
+                >
+                  Video Detection / भिडियो जाँच
+                </a>
+              </li>
             </ul>
           </div>
           <div>

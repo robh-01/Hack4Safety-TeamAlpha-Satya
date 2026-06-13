@@ -319,6 +319,22 @@ export default function ImageDetection() {
             </button>
           )}
         </div>
+
+        {/* Trust Badges */}
+        <div className="mt-24 flex flex-wrap justify-between gap-6 max-w-4xl w-full">
+          {[
+            { title: "Official Verification", desc: "Directly linked to Nepal Police Cyber Bureau databases for official forensic audit." },
+            { title: "Privacy Guaranteed", desc: "Uploaded files are encrypted and automatically purged after 24 hours if not submitted for investigation." },
+          ].map((item, i) => (
+            <div key={i} className="flex-1 min-w-[200px] flex flex-col items-start gap-3 p-6 rounded-xl bg-gray-50 border border-gray-100">
+              <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+                <ShieldCheck size={20} className="text-[#3B4FE0]" />
+              </div>
+              <h3 className="font-semibold text-[#1a2744] text-sm">{item.title}</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
       </main>
 
       <footer className="bg-[#1a2744] text-white mt-16">
