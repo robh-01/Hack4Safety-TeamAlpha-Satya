@@ -75,18 +75,61 @@ export default function EvidenceAnalysis() {
     if (dropped) { setFile(dropped); setVerdict(null); }
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!file) return;
     setAnalyzing(true);
     setVerdict(null);
-    setTimeout(() => {
-      const r = Math.random();
-      const v: Verdict = r > 0.6 ? "FAKE" : r > 0.2 ? "REAL" : "INCONCLUSIVE";
-      setVerdict(v);
-      setConfidence(Math.floor(Math.random() * 10) + (v === "INCONCLUSIVE" ? 45 : 88));
-      setHash(Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(""));
+    setHash("");
+
+    const formData = new FormData();
+    formData.append("media", file);
+
+    try {
+      const res = await fetch("/api/detect", {
+        method: "POST",
+        body: formData,
+      });
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No response body");
+
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const obj = JSON.parse(line);
+
+          if (obj.type === "status") {
+            // optional: setStatusMessage(obj.message)
+          } else if (obj.type === "result") {
+            setVerdict(obj.data.verdict);
+            setConfidence(obj.data.confidence);
+            if (obj.data.details?.aiGenerated || obj.data.details?.deepfake) {
+              setHash(obj.data.details.aiGenerated?.verdict + obj.data.details.deepfake?.verdict);
+            } else {
+              setHash(Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join(""));
+            }
+          } else if (obj.type === "error") {
+            throw new Error(obj.message);
+          }
+        }
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      console.error("Analysis failed:", msg);
+      alert("Analysis failed: " + msg);
+    } finally {
       setAnalyzing(false);
-    }, 2500);
+    }
   };
 
   const toggleCheck = (item: string) => {
@@ -125,13 +168,13 @@ export default function EvidenceAnalysis() {
           ))}
         </nav>
         <div className="px-3 py-4 border-t border-white/10">
-          <a href="/login" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white transition-colors">
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 cursor-default">
             <LogOut size={18} />
             <div>
               <p className="text-sm font-semibold leading-none">बाहिरिनुहोस्</p>
               <p className="text-[10px] opacity-60 mt-0.5">LOGOUT</p>
             </div>
-          </a>
+          </div>
         </div>
       </aside>
 

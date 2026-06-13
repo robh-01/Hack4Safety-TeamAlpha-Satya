@@ -87,16 +87,13 @@ export default function Dashboard() {
         </nav>
 
         <div className="px-3 py-4 border-t border-white/10">
-          <a
-            href="/login"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
-          >
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-400 cursor-default">
             <LogOut size={18} />
             <div>
               <p className="text-sm font-semibold leading-none">बाहिरिनुहोस्</p>
               <p className="text-[10px] opacity-60 mt-0.5">LOGOUT</p>
             </div>
-          </a>
+          </div>
         </div>
       </aside>
 

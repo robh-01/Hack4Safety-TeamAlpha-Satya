@@ -28,11 +28,20 @@ export default {
       "image/jpeg",
       "image/png",
       "image/webp",
+      "video/mp4",
+      "video/webm",
+      "video/x-msvideo",
+      "video/x-matroska",
+      "video/x-ms-wmv",
+      "video/quicktime",
     ],
     dest: "uploads/",
   },
   sightEngine: {
     apiUser: process.env.SIGHT_ENGINE_API_USER || "",
     apiSecret: process.env.SIGHT_ENGINE_API_SECRET || "",
+  },
+  hive: {
+    apiKey: process.env.HIVE_API_KEY || "",
   },
 };
