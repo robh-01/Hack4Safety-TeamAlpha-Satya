@@ -7,7 +7,7 @@ A Firefox extension that scans images while browsing to detect AI-generated cont
 - **Automatic Image Detection**: Scans all images on web pages and adds a scan button near each one
 - **One-Click Analysis**: Click the purple scan icon to analyze any image
 - **Real-time Results**: Shows deepfake/AI-generation scores with visual indicators
-- **Color-Coded Indicators**: 
+- **Color-Coded Indicators**:
   - 🟢 Green: Likely authentic
   - 🟡 Yellow: Uncertain - May be AI-generated
   - 🔴 Red: Likely AI-generated or deepfake
@@ -17,6 +17,7 @@ A Firefox extension that scans images while browsing to detect AI-generated cont
 ## Installation
 
 ### Prerequisites
+
 - Firefox browser (version 48+)
 - Team-Alpha server running locally or remotely
 - Server credentials configured (SIGHT_ENGINE_API_USER/SECRET or HIVE_API_KEY)
@@ -24,6 +25,7 @@ A Firefox extension that scans images while browsing to detect AI-generated cont
 ### Steps
 
 1. **Clone or download this extension** from the Team-Alpha repository
+
    ```bash
    cd /home/santosh/dev/Team-Alpha/extension
    ```
@@ -57,6 +59,7 @@ A Firefox extension that scans images while browsing to detect AI-generated cont
 ### Reading Results
 
 The popup shows:
+
 - **Analysis Source**: Which service analyzed the image (SightEngine or Hive AI)
 - **Deepfake Score**: Percentage confidence (0% = safe, 100% = likely deepfake)
 - **Assessment**: Human-readable verdict
@@ -67,11 +70,13 @@ The popup shows:
 ### Server URL
 
 Edit `background.js` and change:
+
 ```javascript
-const SERVER_URL = 'http://localhost:3000';
+const SERVER_URL = "http://localhost:3000";
 ```
 
 Common configurations:
+
 - Local development: `http://localhost:3000`
 - Remote server: `http://your-server.com:3000`
 - Network machine: `http://192.168.1.100:3000`
@@ -79,21 +84,10 @@ Common configurations:
 ### Supported Analysis Services
 
 The extension works with both SightEngine and Hive AI:
+
 - **Images**: Can use either SightEngine or Hive AI
 - **Videos**: Requires Hive AI
 - **Deepfakes**: Both services detect deepfakes
-
-### Server Environment Variables
-
-Make sure your Team-Alpha server has these configured:
-```bash
-# For SightEngine (images)
-SIGHT_ENGINE_API_USER=your_api_user
-SIGHT_ENGINE_API_SECRET=your_api_secret
-
-# For Hive AI (images and videos)
-HIVE_API_KEY=your_hive_api_key
-```
 
 ## Architecture
 
@@ -129,33 +123,39 @@ HIVE_API_KEY=your_hive_api_key
 ## Troubleshooting
 
 ### Extension doesn't load
+
 - Check Firefox console for errors: Press `Ctrl+Shift+K`
 - Verify manifest.json is valid JSON (use a JSON validator)
 - Ensure all referenced files exist
 
 ### Scan button doesn't appear
+
 - Wait a few seconds - extension scans on page load and after 1s/3s delays
 - Try reloading the page
 - Check console for errors
 
 ### Error: "Failed to fetch image"
+
 - The image may have CORS restrictions
 - Try scanning on a different website
 - Check network tab in Firefox DevTools
 
 ### Error: "Server error"
+
 - Verify Team-Alpha server is running (`npm start` in server folder)
 - Check server is accessible at the configured URL
 - Verify server API credentials are set (SIGHT_ENGINE_API_USER/SECRET or HIVE_API_KEY)
 - Check server logs for errors
 
 ### Analysis takes too long
+
 - Large images take longer to analyze
 - Server API may be slow
 - Check internet connection
 - Try a smaller image
 
 ### No results shown
+
 - Check browser console for errors
 - Verify server is responding correctly
 - Try scanning a different image
@@ -188,6 +188,7 @@ HIVE_API_KEY=your_hive_api_key
 The extension sends images to your Team-Alpha server's `/api/detect` endpoint:
 
 ### Request Format
+
 ```json
 POST /api/detect
 Content-Type: application/json
@@ -199,6 +200,7 @@ Content-Type: application/json
 ```
 
 ### Response Format (NDJSON)
+
 ```
 {"type":"status","message":"Sending to SightEngine for image analysis..."}
 {"type":"status","message":"Analysis complete"}
@@ -223,6 +225,7 @@ Content-Type: application/json
 ## Future Enhancements
 
 Potential improvements:
+
 - [ ] Batch scan multiple images
 - [ ] Save scan history
 - [ ] Custom scan settings
@@ -234,6 +237,7 @@ Potential improvements:
 ## Support
 
 For issues or questions:
+
 1. Check the troubleshooting section above
 2. Review browser console logs (F12 → Console)
 3. Check server logs for API errors
