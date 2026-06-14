@@ -2,7 +2,7 @@
 
 # Team-Alpha
 
-Team-Alpha is split into three main parts: a React client, an Express server, and a browser extension.
+Team-Alpha's project is split into three main parts: a React client, an Express server, and a browser extension.
 This README gives a light overview of the project structure so it is easy to find the main areas quickly.
 
 ## Top-Level Layout
