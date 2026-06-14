@@ -234,14 +234,6 @@ Potential improvements:
 - [ ] Dark mode
 - [ ] Keyboard shortcuts
 
-## Support
-
-For issues or questions:
-
-1. Check the troubleshooting section above
-2. Review browser console logs (F12 → Console)
-3. Check server logs for API errors
-4. Report issues at: https://github.com/anomalyco/opencode
 
 ## License
 
